@@ -1,0 +1,427 @@
+Step 1: torchdynamo start tracing neumann_bc /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:18
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:18 in neumann_bc (neumann_bc)
+    def neumann_bc(u: torch.Tensor, nx: int, ny: int) -> torch.Tensor:
+TRACE RESUME 0 []
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:19 in neumann_bc (neumann_bc)
+        assert len(u.shape) == 2
+TRACE LOAD_GLOBAL len []
+TRACE LOAD_FAST u [NullVariable(), BuiltinVariable()]
+TRACE LOAD_ATTR shape [NullVariable(), BuiltinVariable(), LazyVariableTracker()]
+create_graph_input L_u_ L['u']
+wrap_to_fake L['u'] (300, 300) StatefulSymbolicContext(dynamic_sizes=[<DimDynamic.DUCK: 1>, <DimDynamic.DUCK: 1>], constraint_sizes=[None, None], view_base_context=None, tensor_source=LocalSource(local_name='u', cell_or_freevar=False), shape_env_to_source_to_symbol_cache={}) <class 'torch.Tensor'>
+bind_symint s0 L['u'].size()[0]
+create_graph_input s0 L['u'].size()[0]
+TRACE FX call size from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:19 in neumann_bc (neumann_bc)
+    assert len(u.shape) == 2
+               ^^^^^^^
+TRACE PRECALL 1 [NullVariable(), BuiltinVariable(), SizeVariable()]
+TRACE CALL 1 [NullVariable(), BuiltinVariable(), SizeVariable()]
+TRACE LOAD_CONST 2 [ConstantVariable()]
+TRACE COMPARE_OP == [ConstantVariable(), ConstantVariable()]
+TRACE POP_JUMP_FORWARD_IF_TRUE 54 [ConstantVariable()]
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+        u[0, 1:ny-1]    = u[1, 1:ny-1]
+TRACE LOAD_FAST u []
+TRACE LOAD_CONST 1 [LazyVariableTracker()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_FAST ny [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+create_graph_input L_ny_ L['ny']
+TRACE FX call sub from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+    u[0, 1:ny-1]    = u[1, 1:ny-1]
+                             ~~^^
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), SymNodeVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), ConstantVariable(), SliceVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_2 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+    u[0, 1:ny-1]    = u[1, 1:ny-1]
+                      ~^^^^^^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_CONST 0 [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_FAST ny [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE FX call sub_1 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+    u[0, 1:ny-1]    = u[1, 1:ny-1]
+           ~~^^
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), SymNodeVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), SliceVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+    u[0, 1:ny-1]    = u[1, 1:ny-1]
+    ~^^^^^^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+        u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+TRACE LOAD_FAST u []
+TRACE LOAD_FAST nx [LazyVariableTracker()]
+TRACE LOAD_CONST 2 [LazyVariableTracker(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), LazyVariableTracker(), ConstantVariable()]
+create_graph_input L_nx_ L['nx']
+TRACE FX call sub_2 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+                        ~~^^
+TRACE LOAD_CONST 1 [LazyVariableTracker(), SymNodeVariable()]
+TRACE LOAD_FAST ny [LazyVariableTracker(), SymNodeVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), SymNodeVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), SymNodeVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE FX call sub_3 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+                                ~~^^
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), SymNodeVariable(), ConstantVariable(), SymNodeVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), SymNodeVariable(), SliceVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_3 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+                      ~^^^^^^^^^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_FAST nx [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), LazyVariableTracker(), ConstantVariable()]
+TRACE FX call sub_4 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+      ~~^^
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), SymNodeVariable()]
+TRACE LOAD_FAST ny [TensorVariable(), LazyVariableTracker(), SymNodeVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), SymNodeVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), SymNodeVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE FX call sub_5 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+              ~~^^
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), SymNodeVariable(), ConstantVariable(), SymNodeVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), SymNodeVariable(), SliceVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem_1 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+    ~^^^^^^^^^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc (neumann_bc)
+        u[:, 0]    = u[:, 1]
+TRACE LOAD_FAST u []
+TRACE LOAD_CONST None [LazyVariableTracker()]
+TRACE LOAD_CONST None [LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), SliceVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), SliceVariable(), ConstantVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_4 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc (neumann_bc)
+    u[:, 0]    = u[:, 1]
+                 ~^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 0 [TensorVariable(), LazyVariableTracker(), SliceVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), SliceVariable(), ConstantVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem_2 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc (neumann_bc)
+    u[:, 0]    = u[:, 1]
+    ~^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+        u[:, ny-1] = u[:, ny-2]
+TRACE LOAD_FAST u []
+TRACE LOAD_CONST None [LazyVariableTracker()]
+TRACE LOAD_CONST None [LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_FAST ny [LazyVariableTracker(), SliceVariable()]
+TRACE LOAD_CONST 2 [LazyVariableTracker(), SliceVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), SliceVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE FX call sub_6 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+    u[:, ny-1] = u[:, ny-2]
+                      ~~^^
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), SliceVariable(), SymNodeVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_5 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+    u[:, ny-1] = u[:, ny-2]
+                 ~^^^^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_FAST ny [TensorVariable(), LazyVariableTracker(), SliceVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), SliceVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), SliceVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE FX call sub_7 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+    u[:, ny-1] = u[:, ny-2]
+         ~~^^
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), SliceVariable(), SymNodeVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem_3 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+    u[:, ny-1] = u[:, ny-2]
+    ~^^^^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:27 in neumann_bc (neumann_bc)
+        return u
+TRACE LOAD_FAST u []
+TRACE RETURN_VALUE None [LazyVariableTracker()]
+Step 1: torchdynamo done tracing neumann_bc (RETURN_VALUE)
+RETURN_VALUE triggered compile
+COMPILING GRAPH due to GraphCompileReason(reason='return_value', user_stack=[<FrameSummary file /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py, line 27 in neumann_bc>], graph_break=False)
+TRACED GRAPH
+ ===== __compiled_fn_0 =====
+ /cluster/software/stacks/2024-06/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.2.0/python-3.11.6-ukhwpjnwzzzizek3pgr75zkbhxros5fq/lib/python3.11/site-packages/torch/fx/_lazy_graph_module.py class GraphModule(torch.nn.Module):
+    def forward(self, s0 : torch.SymInt, L_u_ : torch.Tensor, L_ny_ : torch.SymInt, L_nx_ : torch.SymInt):
+        l_u_ = L_u_
+        l_ny_ = L_ny_
+        l_nx_ = L_nx_
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:19 in neumann_bc, code: assert len(u.shape) == 2
+        size = l_u_.size()
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc, code: u[0, 1:ny-1]    = u[1, 1:ny-1]
+        sub = l_ny_ - 1
+        getitem_2 = l_u_[(1, slice(1, sub, None))];  sub = None
+        sub_1 = l_ny_ - 1
+        l_u_[(0, slice(1, sub_1, None))] = getitem_2;  setitem = l_u_;  sub_1 = getitem_2 = None
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc, code: u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+        sub_2 = l_nx_ - 2
+        sub_3 = l_ny_ - 1
+        getitem_3 = l_u_[(sub_2, slice(1, sub_3, None))];  sub_2 = sub_3 = None
+        sub_4 = l_nx_ - 1;  l_nx_ = None
+        sub_5 = l_ny_ - 1
+        l_u_[(sub_4, slice(1, sub_5, None))] = getitem_3;  setitem_1 = l_u_;  sub_4 = sub_5 = getitem_3 = None
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc, code: u[:, 0]    = u[:, 1]
+        getitem_4 = l_u_[(slice(None, None, None), 1)]
+        l_u_[(slice(None, None, None), 0)] = getitem_4;  setitem_2 = l_u_;  getitem_4 = None
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc, code: u[:, ny-1] = u[:, ny-2]
+        sub_6 = l_ny_ - 2
+        getitem_5 = l_u_[(slice(None, None, None), sub_6)];  sub_6 = None
+        sub_7 = l_ny_ - 1;  l_ny_ = None
+        l_u_[(slice(None, None, None), sub_7)] = getitem_5;  setitem_3 = l_u_;  sub_7 = getitem_5 = None
+        return (l_u_,)
+        
+
+TRACED GRAPH
+ __compiled_fn_0 /cluster/software/stacks/2024-06/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.2.0/python-3.11.6-ukhwpjnwzzzizek3pgr75zkbhxros5fq/lib/python3.11/site-packages/torch/fx/_lazy_graph_module.py opcode         name       target                       args                                                 kwargs
+-------------  ---------  ---------------------------  ---------------------------------------------------  --------
+placeholder    s0         s0                           ()                                                   {}
+placeholder    l_u_       L_u_                         ()                                                   {}
+placeholder    l_ny_      L_ny_                        ()                                                   {}
+placeholder    l_nx_      L_nx_                        ()                                                   {}
+call_method    size       size                         (l_u_,)                                              {}
+call_function  sub        <built-in function sub>      (l_ny_, 1)                                           {}
+call_function  getitem_2  <built-in function getitem>  (l_u_, (1, slice(1, sub, None)))                     {}
+call_function  sub_1      <built-in function sub>      (l_ny_, 1)                                           {}
+call_function  setitem    <built-in function setitem>  (l_u_, (0, slice(1, sub_1, None)), getitem_2)        {}
+call_function  sub_2      <built-in function sub>      (l_nx_, 2)                                           {}
+call_function  sub_3      <built-in function sub>      (l_ny_, 1)                                           {}
+call_function  getitem_3  <built-in function getitem>  (l_u_, (sub_2, slice(1, sub_3, None)))               {}
+call_function  sub_4      <built-in function sub>      (l_nx_, 1)                                           {}
+call_function  sub_5      <built-in function sub>      (l_ny_, 1)                                           {}
+call_function  setitem_1  <built-in function setitem>  (l_u_, (sub_4, slice(1, sub_5, None)), getitem_3)    {}
+call_function  getitem_4  <built-in function getitem>  (l_u_, (slice(None, None, None), 1))                 {}
+call_function  setitem_2  <built-in function setitem>  (l_u_, (slice(None, None, None), 0), getitem_4)      {}
+call_function  sub_6      <built-in function sub>      (l_ny_, 2)                                           {}
+call_function  getitem_5  <built-in function getitem>  (l_u_, (slice(None, None, None), sub_6))             {}
+call_function  sub_7      <built-in function sub>      (l_ny_, 1)                                           {}
+call_function  setitem_3  <built-in function setitem>  (l_u_, (slice(None, None, None), sub_7), getitem_5)  {}
+output         output     output                       ((l_u_,),)                                           {}
+
+TRACED GRAPH TENSOR SIZES
+===== __compiled_fn_0 =====
+l_u_: (s0, s0)
+l_u_ (concrete): (300, 300)
+getitem_2: (298,)
+getitem_2 (concrete): (298,)
+getitem_3: (298,)
+getitem_3 (concrete): (298,)
+getitem_4: (s0,)
+getitem_4 (concrete): (300,)
+getitem_5: (s0,)
+getitem_5 (concrete): (300,)
+
+Step 2: calling compiler function inductor
+Step 2: done compiler function inductor
+Step 1: torchdynamo start tracing neumann_bc /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:18
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:18 in neumann_bc (neumann_bc)
+    def neumann_bc(u: torch.Tensor, nx: int, ny: int) -> torch.Tensor:
+TRACE RESUME 0 []
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:19 in neumann_bc (neumann_bc)
+        assert len(u.shape) == 2
+TRACE LOAD_GLOBAL len []
+TRACE LOAD_FAST u [NullVariable(), BuiltinVariable()]
+TRACE LOAD_ATTR shape [NullVariable(), BuiltinVariable(), LazyVariableTracker()]
+create_graph_input L_u_ L['u']
+wrap_to_fake L['u'] (300, 300) StatefulSymbolicContext(dynamic_sizes=[<DimDynamic.DYNAMIC: 0>, <DimDynamic.DYNAMIC: 0>], constraint_sizes=[None, None], view_base_context=None, tensor_source=LocalSource(local_name='u', cell_or_freevar=False), shape_env_to_source_to_symbol_cache={}) <class 'torch.Tensor'>
+bind_symint s0 L['u'].size()[0]
+create_graph_input s0 L['u'].size()[0]
+bind_symint s1 L['u'].size()[1]
+create_graph_input s1 L['u'].size()[1]
+TRACE FX call size from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:19 in neumann_bc (neumann_bc)
+    assert len(u.shape) == 2
+               ^^^^^^^
+TRACE PRECALL 1 [NullVariable(), BuiltinVariable(), SizeVariable()]
+TRACE CALL 1 [NullVariable(), BuiltinVariable(), SizeVariable()]
+TRACE LOAD_CONST 2 [ConstantVariable()]
+TRACE COMPARE_OP == [ConstantVariable(), ConstantVariable()]
+TRACE POP_JUMP_FORWARD_IF_TRUE 54 [ConstantVariable()]
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+        u[0, 1:ny-1]    = u[1, 1:ny-1]
+TRACE LOAD_FAST u []
+TRACE LOAD_CONST 1 [LazyVariableTracker()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_FAST ny [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), ConstantVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), ConstantVariable(), SliceVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_2 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+    u[0, 1:ny-1]    = u[1, 1:ny-1]
+                      ~^^^^^^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_CONST 0 [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_FAST ny [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), ConstantVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), SliceVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc (neumann_bc)
+    u[0, 1:ny-1]    = u[1, 1:ny-1]
+    ~^^^^^^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+        u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+TRACE LOAD_FAST u []
+TRACE LOAD_FAST nx [LazyVariableTracker()]
+TRACE LOAD_CONST 2 [LazyVariableTracker(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_FAST ny [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable(), ConstantVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), ConstantVariable(), SliceVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_3 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+                      ~^^^^^^^^^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_FAST nx [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE LOAD_FAST ny [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable(), ConstantVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), SliceVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem_1 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc (neumann_bc)
+    u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+    ~^^^^^^^^^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc (neumann_bc)
+        u[:, 0]    = u[:, 1]
+TRACE LOAD_FAST u []
+TRACE LOAD_CONST None [LazyVariableTracker()]
+TRACE LOAD_CONST None [LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 1 [LazyVariableTracker(), SliceVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), SliceVariable(), ConstantVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_4 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc (neumann_bc)
+    u[:, 0]    = u[:, 1]
+                 ~^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_CONST 0 [TensorVariable(), LazyVariableTracker(), SliceVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), SliceVariable(), ConstantVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem_2 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc (neumann_bc)
+    u[:, 0]    = u[:, 1]
+    ~^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+        u[:, ny-1] = u[:, ny-2]
+TRACE LOAD_FAST u []
+TRACE LOAD_CONST None [LazyVariableTracker()]
+TRACE LOAD_CONST None [LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_FAST ny [LazyVariableTracker(), SliceVariable()]
+TRACE LOAD_CONST 2 [LazyVariableTracker(), SliceVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [LazyVariableTracker(), SliceVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_TUPLE 2 [LazyVariableTracker(), SliceVariable(), ConstantVariable()]
+TRACE BINARY_SUBSCR None [LazyVariableTracker(), TupleVariable()]
+TRACE FX call getitem_5 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+    u[:, ny-1] = u[:, ny-2]
+                 ~^^^^^^^^^
+TRACE LOAD_FAST u [TensorVariable()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker()]
+TRACE LOAD_CONST None [TensorVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_SLICE 2 [TensorVariable(), LazyVariableTracker(), ConstantVariable(), ConstantVariable()]
+TRACE LOAD_FAST ny [TensorVariable(), LazyVariableTracker(), SliceVariable()]
+TRACE LOAD_CONST 1 [TensorVariable(), LazyVariableTracker(), SliceVariable(), LazyVariableTracker()]
+TRACE BINARY_OP 10 [TensorVariable(), LazyVariableTracker(), SliceVariable(), LazyVariableTracker(), ConstantVariable()]
+TRACE BUILD_TUPLE 2 [TensorVariable(), LazyVariableTracker(), SliceVariable(), ConstantVariable()]
+TRACE STORE_SUBSCR None [TensorVariable(), LazyVariableTracker(), TupleVariable()]
+TRACE FX call setitem_3 from /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc (neumann_bc)
+    u[:, ny-1] = u[:, ny-2]
+    ~^^^^^^^^^
+TRACE starts_line /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:27 in neumann_bc (neumann_bc)
+        return u
+TRACE LOAD_FAST u []
+TRACE RETURN_VALUE None [LazyVariableTracker()]
+Step 1: torchdynamo done tracing neumann_bc (RETURN_VALUE)
+RETURN_VALUE triggered compile
+COMPILING GRAPH due to GraphCompileReason(reason='return_value', user_stack=[<FrameSummary file /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py, line 27 in neumann_bc>], graph_break=False)
+TRACED GRAPH
+ ===== __compiled_fn_1 =====
+ /cluster/software/stacks/2024-06/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.2.0/python-3.11.6-ukhwpjnwzzzizek3pgr75zkbhxros5fq/lib/python3.11/site-packages/torch/fx/_lazy_graph_module.py class GraphModule(torch.nn.Module):
+    def forward(self, s0 : torch.SymInt, s1 : torch.SymInt, L_u_ : torch.Tensor):
+        l_u_ = L_u_
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:19 in neumann_bc, code: assert len(u.shape) == 2
+        size = l_u_.size()
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:21 in neumann_bc, code: u[0, 1:ny-1]    = u[1, 1:ny-1]
+        getitem_2 = l_u_[(1, slice(1, 299, None))]
+        l_u_[(0, slice(1, 299, None))] = getitem_2;  setitem = l_u_;  getitem_2 = None
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:22 in neumann_bc, code: u[nx-1, 1:ny-1] = u[nx-2, 1:ny-1]
+        getitem_3 = l_u_[(298, slice(1, 299, None))]
+        l_u_[(299, slice(1, 299, None))] = getitem_3;  setitem_1 = l_u_;  getitem_3 = None
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:25 in neumann_bc, code: u[:, 0]    = u[:, 1]
+        getitem_4 = l_u_[(slice(None, None, None), 1)]
+        l_u_[(slice(None, None, None), 0)] = getitem_4;  setitem_2 = l_u_;  getitem_4 = None
+        
+        # File: /cluster/home/konradha/nonlinear-solvers/nlsolvers/device/include/bc_update_kernel_fusion.py:26 in neumann_bc, code: u[:, ny-1] = u[:, ny-2]
+        getitem_5 = l_u_[(slice(None, None, None), 298)]
+        l_u_[(slice(None, None, None), 299)] = getitem_5;  setitem_3 = l_u_;  getitem_5 = None
+        return (l_u_,)
+        
+
+TRACED GRAPH
+ __compiled_fn_1 /cluster/software/stacks/2024-06/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.2.0/python-3.11.6-ukhwpjnwzzzizek3pgr75zkbhxros5fq/lib/python3.11/site-packages/torch/fx/_lazy_graph_module.py opcode         name       target                       args                                               kwargs
+-------------  ---------  ---------------------------  -------------------------------------------------  --------
+placeholder    s0         s0                           ()                                                 {}
+placeholder    s1         s1                           ()                                                 {}
+placeholder    l_u_       L_u_                         ()                                                 {}
+call_method    size       size                         (l_u_,)                                            {}
+call_function  getitem_2  <built-in function getitem>  (l_u_, (1, slice(1, 299, None)))                   {}
+call_function  setitem    <built-in function setitem>  (l_u_, (0, slice(1, 299, None)), getitem_2)        {}
+call_function  getitem_3  <built-in function getitem>  (l_u_, (298, slice(1, 299, None)))                 {}
+call_function  setitem_1  <built-in function setitem>  (l_u_, (299, slice(1, 299, None)), getitem_3)      {}
+call_function  getitem_4  <built-in function getitem>  (l_u_, (slice(None, None, None), 1))               {}
+call_function  setitem_2  <built-in function setitem>  (l_u_, (slice(None, None, None), 0), getitem_4)    {}
+call_function  getitem_5  <built-in function getitem>  (l_u_, (slice(None, None, None), 298))             {}
+call_function  setitem_3  <built-in function setitem>  (l_u_, (slice(None, None, None), 299), getitem_5)  {}
+output         output     output                       ((l_u_,),)                                         {}
+
+TRACED GRAPH TENSOR SIZES
+===== __compiled_fn_1 =====
+l_u_: (s0, s1)
+l_u_ (concrete): (300, 300)
+getitem_2: (298,)
+getitem_3: (298,)
+getitem_4: (s0,)
+getitem_4 (concrete): (300,)
+getitem_5: (s0,)
+getitem_5 (concrete): (300,)
+
+Step 2: calling compiler function dynamo_graph_accumulating_compiler
+Step 2: done compiler function dynamo_graph_accumulating_compiler
