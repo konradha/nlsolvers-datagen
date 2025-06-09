@@ -8,7 +8,11 @@
 #include "spmv.hpp"
 
 #include <cuda_runtime.h>
+
+#include <Eigen/Dense>
+
 #include <vector>
+
 
 namespace device {
 

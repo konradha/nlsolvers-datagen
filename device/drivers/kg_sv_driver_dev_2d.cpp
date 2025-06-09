@@ -1,5 +1,3 @@
-#include "boundaries_3d.hpp"
-#include "eigen_krylov_real.hpp"
 #include "laplacians.hpp"
 #include "kg_dev.hpp"
 #include "util.hpp"

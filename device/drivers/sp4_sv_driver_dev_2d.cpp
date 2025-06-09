@@ -1,4 +1,3 @@
-#include "eigen_krylov_real.hpp"
 #include "laplacians.hpp"
 #include "stochastic_phi4_dev.hpp"
 #include "util.hpp"

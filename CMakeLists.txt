@@ -79,7 +79,7 @@ find_package(Eigen3 REQUIRED)
 include_directories(${EIGEN3_INCLUDE_DIR})
 link_libraries(${LAPACK_LIBRARIES} ${BLAS_LIBRARIES})
 
-set(LIBNPY_DIR "${CMAKE_SOURCE_DIR}/../libnpy" CACHE PATH "Path to libnpy directory")
+set(LIBNPY_DIR "${CMAKE_SOURCE_DIR}/libnpy" CACHE PATH "Path to libnpy directory")
 if(EXISTS "${LIBNPY_DIR}/include/npy.hpp")
   include_directories(${LIBNPY_DIR}/include)
   add_definitions(-DHAVE_LIBNPY)
@@ -90,11 +90,9 @@ endif()
 
 include_directories(
   ${CMAKE_SOURCE_DIR}/common/include
-  ${CMAKE_SOURCE_DIR}/host/include
 )
 
 add_subdirectory(common)
-add_subdirectory(host)
 
 if(ENABLE_GPU)
   add_subdirectory(device)
