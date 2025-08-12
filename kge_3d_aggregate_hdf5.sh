@@ -1,9 +1,9 @@
 #!/bin/bash
 
 #SBATCH --job-name=kge_3d_aggregate
-#SBATCH --time=03:59:00                
-#SBATCH --ntasks=12                    
-#SBATCH --mem-per-cpu=8G               
+#SBATCH --time=01:59:00                
+#SBATCH --ntasks=24                    
+#SBATCH --mem-per-cpu=32G               
 #SBATCH --output=logs/%j/aggregate_kge_3d.out 
 #SBATCH --error=logs/%j/aggregate_kge_3d.err
 
