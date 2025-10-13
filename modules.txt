@@ -2,3 +2,7 @@ module load stack/2024-06 cuda/12.1.1 python/3.11.6 eigen
 module load gcc/12.2.0  openmpi/4.1.6
 module load py-mpi4py/3.1.4
 module load cmake/3.27.7
+module load netcdf-c/4.9.2
+
+# for the aggregation
+module load gcc/12.2.0 openmpi/4.1.6 hdf5/1.14.3 netcdf-c/4.9.2 eigen/3.4.0
