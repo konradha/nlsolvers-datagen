@@ -1,0 +1,37 @@
+pde_type: Klein-Gordon
+boundary_condition: neumann
+num_trajectories: 420
+num_snapshots: 40
+nt: 10000
+domain:
+  Lx:
+  - -3.0
+  - 3.0
+  Ly:
+  - -3.0
+  - 3.0
+  Lz:
+  - -3.0
+  - 3.0
+  T:
+  - 0.0
+  - 10.0
+grid:
+  nx: 220
+  ny: 220
+  nz: 220
+m_classes:
+- constant
+- defects
+- gradient
+- multiscale
+- piecewise
+- quasiperiodic
+- topological
+c_classes:
+- constant
+- layered
+- piecewise_constant
+- quasiperiodic
+- turbulent
+- waveguide

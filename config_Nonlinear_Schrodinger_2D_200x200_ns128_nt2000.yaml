@@ -1,0 +1,33 @@
+pde_type: Nonlinear Schrodinger
+boundary_condition: neumann
+num_trajectories: 12600
+num_snapshots: 128
+nt: 2000
+domain:
+  Lx:
+  - -10.0
+  - 10.0
+  Ly:
+  - -10.0
+  - 10.0
+  T:
+  - 0.0
+  - 1.2
+grid:
+  nx: 200
+  ny: 200
+m_classes:
+- constant
+- defects
+- gradient
+- multiscale
+- piecewise
+- quasiperiodic
+- topological
+c_classes:
+- constant
+- layered
+- periodic_structure
+- piecewise_constant
+- sign_changing_mass
+- waveguide
