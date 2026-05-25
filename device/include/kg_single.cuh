@@ -11,6 +11,8 @@
 #include <thrust/device_vector.h>
 #include <thrust/transform.h>
 #include <thrust/functional.h>
+#include <thrust/iterator/zip_iterator.h>
+#include <thrust/tuple.h>
 
 namespace device {
 
@@ -54,6 +56,52 @@ void m_u_cubed(double * out, double* m, double* u, uint32_t n) {
     thrust::transform(m_ptr, m_ptr + n, result_ptr, result_ptr, thrust::multiplies<double>());
 }
 
+void cubic_force(double *out, const double *m, const double *u, uint32_t n) {
+    thrust::device_ptr<const double> m_ptr(m);
+    thrust::device_ptr<const double> u_ptr(u);
+    thrust::device_ptr<double> out_ptr(out);
+
+    thrust::transform(u_ptr, u_ptr + n, m_ptr, out_ptr,
+                      [] __device__ (double u_val, double m_val) {
+                          return -m_val * u_val * u_val * u_val;
+                      });
+}
+
+void update_velocity(double *v, const double *u, const double *u_past,
+                     const double tau, const uint32_t n) {
+  thrust::device_ptr<const double> u_ptr(u);
+  thrust::device_ptr<const double> u_past_ptr(u_past);
+  thrust::device_ptr<double> v_ptr(v);
+
+  thrust::transform(u_ptr, u_ptr + n, u_past_ptr, v_ptr,
+                    [tau] __device__ (double u_val, double u_past_val) {
+                      return (u_val - u_past_val) / tau;
+                    });
+}
+
+struct GautschiUpdate {
+  double tau_squared;
+
+  template <typename Tuple>
+  __host__ __device__ double operator()(const Tuple& values) const {
+    return 2.0 * thrust::get<0>(values) -
+           thrust::get<1>(values) +
+           tau_squared * thrust::get<2>(values);
+  }
+};
+
+struct StormerVerletUpdate {
+  double dt_squared;
+
+  template <typename Tuple>
+  __host__ __device__ double operator()(const Tuple& values) const {
+    return 2.0 * thrust::get<0>(values) -
+           thrust::get<1>(values) +
+           dt_squared * thrust::get<2>(values) +
+           dt_squared * thrust::get<3>(values);
+  }
+};
+
 void step(double *d_v, double *d_u, double *d_u_past, double *d_buf,
           double *d_buf2, double *d_buf3, MatrixFunctionApplicatorReal *matfunc,
           const double *d_m, const double tau, const uint32_t n,
@@ -96,34 +144,22 @@ void step(double *d_v, double *d_u, double *d_u_past, double *d_buf,
   thrust::device_ptr<double> d_buf_ptr(d_buf);
   thrust::device_ptr<double> d_buf2_ptr(d_buf2);
   thrust::device_ptr<double> d_buf3_ptr(d_buf3);
-  thrust::device_ptr<const double> d_m_ptr(d_m);
 
   thrust::copy(d_u_ptr, d_u_ptr + n, d_buf_ptr);
-  
+
   matfunc->apply(d_buf2, d_u, tau, MatrixFunctionApplicatorReal::FunctionType::COS_SQRT);
-  thrust::transform(d_buf2_ptr, d_buf2_ptr + n, d_buf2_ptr,
-                    thrust::placeholders::_1 * 2.0);
-  thrust::transform(d_u_ptr, d_u_ptr + n, d_m_ptr, d_buf3_ptr,
-                    [] __device__ (double u_val, double m_val) {
-                        return -m_val * u_val * u_val * u_val;
-                    });
- 
+  cubic_force(d_buf3, d_m, d_u, n);
   matfunc->apply(d_buf3, d_buf3, tau, MatrixFunctionApplicatorReal::FunctionType::SINC2_SQRT);
-  double tau_squared = tau * tau;
-  thrust::transform(d_buf3_ptr, d_buf3_ptr + n, d_buf3_ptr,
-                    thrust::placeholders::_1 * tau_squared);
- 
-  thrust::transform(d_buf2_ptr, d_buf2_ptr + n, d_u_past_ptr, d_u_ptr,
-                    thrust::minus<double>());
-  thrust::transform(d_u_ptr, d_u_ptr + n, d_buf3_ptr, d_u_ptr,
-                    thrust::plus<double>());
+
+  const double tau_squared = tau * tau;
+  const auto update_first = thrust::make_zip_iterator(
+      thrust::make_tuple(d_buf2_ptr, d_u_past_ptr, d_buf3_ptr));
+  const auto update_last = update_first + n;
+  thrust::transform(update_first, update_last, d_u_ptr,
+                    GautschiUpdate{tau_squared});
+
   thrust::copy(d_buf_ptr, d_buf_ptr + n, d_u_past_ptr);
- 
-  thrust::device_ptr<double> d_v_ptr(d_v);
-  thrust::transform(d_u_ptr, d_u_ptr + n, d_u_past_ptr, d_v_ptr,
-                    [tau] __device__ (double u, double u_past) {
-                        return (u - u_past) / tau;
-                    });
+  update_velocity(d_v, d_u, d_u_past, tau, n);
 }
 
 void step_sv(double *d_v, double *d_u, double *d_u_past, double *d_buf,
@@ -143,39 +179,25 @@ void step_sv(double *d_v, double *d_u, double *d_u_past, double *d_buf,
   */
 
     thrust::device_ptr<double> d_u_ptr(d_u);
-    thrust::device_ptr<double> d_buf3_ptr(d_buf3);
-    thrust::copy(d_u_ptr, d_u_ptr + n, d_buf3_ptr);
-   
-    matfunc->expose_spmv()->multiply(d_u, d_buf);
-    thrust::device_ptr<const double> d_m_ptr(d_m);
-    thrust::device_ptr<double> d_buf2_ptr(d_buf2);
-    thrust::transform(d_u_ptr, d_u_ptr + n, d_m_ptr, d_buf2_ptr,
-                     [] __device__ (double u_val, double m_val) {
-                         return -m_val * u_val * u_val * u_val;
-                     });
-    
-    double dt_squared = tau * tau;
-    thrust::device_ptr<double> d_buf_ptr(d_buf);
-    thrust::transform(d_buf_ptr, d_buf_ptr + n, d_buf_ptr,
-                    [dt_squared] __device__ (double val) { return dt_squared * val; });
-    thrust::transform(d_buf2_ptr, d_buf2_ptr + n, d_buf2_ptr,
-                    [dt_squared] __device__ (double val) { return dt_squared * val; });
-    
     thrust::device_ptr<double> d_u_past_ptr(d_u_past);
-    thrust::transform(d_u_ptr, d_u_ptr + n, d_u_past_ptr, d_u_ptr,
-                    [] __device__ (double u, double u_past) { return 2.0 * u - u_past; });
-    
-    thrust::transform(d_u_ptr, d_u_ptr + n, d_buf_ptr, d_u_ptr,
-                    [] __device__ (double u, double dt2_Lu) { return u + dt2_Lu; });
-    thrust::transform(d_u_ptr, d_u_ptr + n, d_buf2_ptr, d_u_ptr,
-                    [] __device__ (double u, double dt2_nmu3) { return u + dt2_nmu3; });
-    
+    thrust::device_ptr<double> d_buf_ptr(d_buf);
+    thrust::device_ptr<double> d_buf2_ptr(d_buf2);
+    thrust::device_ptr<double> d_buf3_ptr(d_buf3);
+
+    thrust::copy(d_u_ptr, d_u_ptr + n, d_buf3_ptr);
+
+    matfunc->expose_spmv()->multiply(d_u, d_buf);
+    cubic_force(d_buf2, d_m, d_u, n);
+
+    const double dt_squared = tau * tau;
+    const auto update_first = thrust::make_zip_iterator(
+        thrust::make_tuple(d_u_ptr, d_u_past_ptr, d_buf_ptr, d_buf2_ptr));
+    const auto update_last = update_first + n;
+    thrust::transform(update_first, update_last, d_u_ptr,
+                      StormerVerletUpdate{dt_squared});
+
     thrust::copy(d_buf3_ptr, d_buf3_ptr + n, d_u_past_ptr);
-    thrust::device_ptr<double> d_v_ptr(d_v);
-    thrust::transform(d_u_ptr, d_u_ptr + n, d_u_past_ptr, d_v_ptr,
-                    [tau] __device__ (double u, double u_past) {
-                        return (u - u_past) / tau;
-                    });
+    update_velocity(d_v, d_u, d_u_past, tau, n);
 }
 
 } // namespace KGESolver

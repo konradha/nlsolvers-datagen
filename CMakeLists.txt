@@ -16,6 +16,9 @@ option(OPTIMIZE_SPEED "Optimize for maximum perf" ON)
 
 option(BUILD_NLSE_CUBIC "Build NLSE with cubic nonlinearity" ON)
 option(BUILD_KG "Build KGE" ON)
+option(BUILD_2D_DRIVERS "Build two-dimensional CUDA driver executables" ON)
+option(BUILD_3D_DRIVERS "Build three-dimensional CUDA driver executables" OFF)
+option(BUILD_AUXILIARY_DRIVERS "Build auxiliary CUDA check executables" OFF)
 
 ### EASILY EXTENED HERE: JUST COPY HEADER AND DRIVER TO BUILD NEW NONLINEARITY INTO LIBRARY
 

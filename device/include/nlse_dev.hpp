@@ -212,17 +212,19 @@ public:
       thrust::device_ptr<thrust::complex<double>> buf_ptr(d_buf_);
       thrust::copy(u_ptr, u_ptr + n_, buf_ptr);
 
-      compute_B(d_buf2_, d_m_, d_u_, n_);
+      thrust::complex<double>* exp_phi_B = d_buf2_;
+      thrust::complex<double>* exp_prev = d_buf3_;
+
+      compute_B(exp_phi_B, d_m_, d_u_, n_);
 
       std::complex<double> std_real_tau(tau.imag(), 0.0);
-      thrust::complex<double> real_tau(std_real_tau.real(), std_real_tau.imag());
-      matfunc_->apply(d_buf3_, d_buf2_, std_real_tau, "sinc");
-      matfunc_->apply(d_buf2_, d_buf3_, tau, "exp");
-      
-      std::complex<double> two_tau = 2.0 * tau;
-      matfunc_->apply(d_buf3_, d_u_prev_, two_tau, "exp");
+      matfunc_->apply(exp_prev, exp_phi_B, std_real_tau, "sinc");
+      matfunc_->apply(exp_phi_B, exp_prev, tau, "exp");
 
-      apply_sewi(d_u_, d_buf2_, d_buf3_, tau, n_);
+      std::complex<double> two_tau = 2.0 * tau;
+      matfunc_->apply(exp_prev, d_u_prev_, two_tau, "exp");
+
+      apply_sewi(d_u_, exp_prev, exp_phi_B, tau, n_);
 
       thrust::device_ptr<thrust::complex<double>> u_prev_ptr(d_u_prev_);
       thrust::copy(buf_ptr, buf_ptr + n_, u_prev_ptr);
