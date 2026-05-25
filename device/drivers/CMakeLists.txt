@@ -36,7 +36,7 @@ if(BUILD_NLSE_CUBIC)
   endif()
 endif()
 
-if(BUILD_AUXILIARY_DRIVERS)
+if(BUILD_STOCHASTIC_PHI4)
   add_cuda_driver(sp4_sv_2d_dev sp4_sv_driver_dev_2d.cpp)
   add_cuda_driver(sp4_sv_3d_dev sp4_sv_driver_dev_3d.cpp)
 endif()
